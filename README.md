@@ -10,10 +10,6 @@ Simulating the stochastic evolution of DNA under the Jukes–Cantor model and qu
 - [Features](#features)  
 - [Repository Structure](#repository-structure)  
 - [Installation](#installation)  
-- [Usage](#usage)  
-  - [Population-Level Simulation](#population-level-simulation)  
-  - [Sequence-Level Sampling](#sequence-level-sampling)  
-- [Analysis & Visualization](#analysis--visualization)  
 - [Key Findings](#key-findings)  
 - [Contributing](#contributing)  
 - [License](#license)  
@@ -41,14 +37,14 @@ Under neutral evolution, each nucleotide (A, C, G, T) mutates to any other with 
 ```text
 Project DNA/
 ├─ .git/                    
-├─ README.md               ← This file  
+├─ README.md                ← This file  
 └─ notebooks_code/
-   ├─ bio_intro.py         ← Nucleotide basics & context  
-   ├─ bio_structures.py    ← DNASequence and data structures  
-   ├─ mutation_random.py   ← IID mutation demo & die analogy  
-   ├─ markov_mutations.py  ← JC transition matrix & chain updates  
-   ├─ hypothesis_testing.py← Bootstrap & statistical tests  
-   ├─ plotting.py          ← Quick plotting utilities  
+   ├─ bio_intro.py          ← Nucleotide basics & context  
+   ├─ bio_structures.py     ← DNASequence and data structures  
+   ├─ mutation_random.py    ← IID mutation demo & die analogy  
+   ├─ markov_mutations.py   ← JC transition matrix & chain updates  
+   ├─ hypothesis_testing.py ← Bootstrap & statistical tests  
+   ├─ plotting.py           ← Quick plotting utilities  
    └─ Project_DNA.ipynb     ← Master notebook: runs end-to-end  
 ```
 
@@ -58,7 +54,7 @@ Project DNA/
 
 1. **Clone the repo**  
    ```bash
-   git clone https://github.com/<your-username>/project-dna.git
+   git clone https://github.com/stilyan122/project-dna.git
    cd project-dna
    ```
 2. **Create & activate a virtual environment**  
@@ -76,47 +72,6 @@ Project DNA/
    - SciPy  
    - Matplotlib  
    - (Optional) NetworkX  
-
----
-
-## Usage
-
-### Population-Level Simulation
-
-```python
-from markov_mutations import jukes_cantor_matrix, is_stochastic_matrix
-import numpy as np
-
-μ = 0.01
-P = jukes_cantor_matrix(mu=μ)
-assert is_stochastic_matrix(P)
-
-# Initial frequencies: all As
-dist = np.array([1.0, 0.0, 0.0, 0.0])
-for gen in range(1, 5001):
-    dist = dist @ P
-    # compute L1 distance to uniform [0.25, 0.25, 0.25, 0.25]
-```
-
-### Sequence-Level Sampling
-
-```python
-from bio_structures import DNASequence
-
-seq = DNASequence.random(length=1_000_000, freq=[1,0,0,0])
-for gen in range(1, 5001):
-    seq.mutate(mu=μ)
-    freqs = seq.base_frequencies()
-    # compute L1 distance to uniform [0.25, 0.25, 0.25, 0.25]
-```
-
----
-
-## Analysis & Visualization
-
-- **Convergence Curves**: Use `plotting.quick_line_plot()` to display L₁ distance over generations.  
-- **Frequency Histograms**: Use `plotting.quick_bar_plot()` at snapshots (e.g. gen 0, gen 1000, gen 3000).  
-- **Bootstrap**: Run `hypothesis_testing.bootstrap_time_to_uniform()` to get confidence intervals for threshold crossing.
 
 ---
 
